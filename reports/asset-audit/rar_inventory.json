@@ -1,0 +1,80 @@
+[
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "destination": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ",
+    "returncode": 0,
+    "log": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar: RAR 5\n  Atlas colores pequeños, cristales, paredes y puerta.png  (28330 B)... OK.\n  Atlas emblematicos.png  (190941 B)... OK.\n  Atlas final calle y arboles NM.png  (2150694 B)... OK.\n  Atlas final calle y arboles.png  (1718681 B)... OK.\n  Atlas final calle y cesped NM.png  (3131180 B)... OK.\n  Atlas valla y roca transparencia.png  (17974 B)... OK.\n  Atlas valla y roca.png  (1080566 B)... OK.\n  Atlas, cristales, paredes y puerta FIN.png  (336481 B)... OK.\n  Atlas, cristales, paredes, puerta central nuclear FIN.png  (835954 B)... OK.\n  TRANSPARENCIA LETREROS.png  (31878 B)... OK.\n  Mapa Simpson.mtl  (1238 B)... OK.\n  Mapa Simpson.obj  (17445410 B)... OK.\nSuccessfully extracted to \"asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ\".\n"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas colores pequeños, cristales, paredes y puerta.png",
+    "size": 28330,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas colores pequeños, cristales, paredes y puerta.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas emblematicos.png",
+    "size": 190941,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas emblematicos.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas final calle y arboles NM.png",
+    "size": 2150694,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas final calle y arboles NM.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas final calle y arboles.png",
+    "size": 1718681,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas final calle y arboles.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas final calle y cesped NM.png",
+    "size": 3131180,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas final calle y cesped NM.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas valla y roca transparencia.png",
+    "size": 17974,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas valla y roca transparencia.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas valla y roca.png",
+    "size": 1080566,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas valla y roca.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas, cristales, paredes y puerta FIN.png",
+    "size": 336481,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas, cristales, paredes y puerta FIN.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Atlas, cristales, paredes, puerta central nuclear FIN.png",
+    "size": 835954,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Atlas, cristales, paredes, puerta central nuclear FIN.png"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Mapa Simpson.mtl",
+    "size": 1238,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Mapa Simpson.mtl"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/Mapa Simpson.obj",
+    "size": 17445410,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Mapa Simpson.obj"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "file": "FINAL OBJ/TRANSPARENCIA LETREROS.png",
+    "size": 31878,
+    "output": "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/TRANSPARENCIA LETREROS.png"
+  }
+]
