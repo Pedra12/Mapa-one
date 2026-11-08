@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     if event is InputEventScreenTouch:
-        var p := event.position
+        var p: Vector2 = event.position
         if event.pressed:
             if _inside_jump(p):
                 player.request_jump()
