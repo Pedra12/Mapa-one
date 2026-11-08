@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 class_name TouchHUD
 
 var player: AdventurePlayer
@@ -13,7 +13,7 @@ var fire_pressed := false
 var sprint_pressed := false
 
 func _ready() -> void:
-    player = get_parent().get_node("Player") as AdventurePlayer
+    player = get_parent().get_parent().get_node("Player") as AdventurePlayer\n    screen_size = get_viewport_rect().size
     set_process_input(true)
     queue_redraw()
 
