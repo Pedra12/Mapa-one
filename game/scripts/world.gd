@@ -49,6 +49,7 @@ func _load_springfield_map() -> void:
                     var map_node := packed.instantiate()
                     map_node.name = "SpringfieldMap"
                     add_child(map_node)
+                    _add_map_collisions(map_node)
                     return
             var mesh_path := str(parsed.get("map_mesh", ""))
             if mesh_path != "" and ResourceLoader.exists(mesh_path):
@@ -65,6 +66,14 @@ func _load_springfield_map() -> void:
                     return
     push_warning("Springfield geometry not available. Using a temporary ground for input testing.")
     _create_stylized_test_ground()
+
+func _add_map_collisions(map_root: Node) -> void:
+    var meshes := map_root.find_children("*", "MeshInstance3D", true, false)
+    if map_root is MeshInstance3D:
+        meshes.push_front(map_root)
+    for mesh_node in meshes:
+        if mesh_node is MeshInstance3D and mesh_node.mesh:
+            mesh_node.create_trimesh_collision()
 
 func _create_stylized_test_ground() -> void:
     var ground := MeshInstance3D.new()
