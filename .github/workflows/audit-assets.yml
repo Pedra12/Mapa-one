@@ -57,6 +57,7 @@ jobs:
         env:
           SPRINGFIELD_OBJ: "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Mapa Simpson.obj"
           SPRINGFIELD_GLB: "asset-audit/converted/MapaSpringfield.glb"
+          PYTHONPATH: "/usr/lib/python3/dist-packages"
         run: |
           blender --background --python tools/convert_springfield.py -- "$SPRINGFIELD_OBJ" "$SPRINGFIELD_GLB"
 
