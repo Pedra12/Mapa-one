@@ -47,6 +47,27 @@ if models:
     else:
         map_scene = "res://" + rel.as_posix()
 
+map_stats = {"vertices": 0, "faces": 0, "objects": 0, "material_libraries": [], "textures_missing": []}
+if map_mesh:
+    obj_file = game / map_mesh.replace("res://", "")
+    obj_lines = obj_file.read_text(encoding="utf-8", errors="ignore").splitlines()
+    map_stats["vertices"] = sum(1 for line in obj_lines if line.startswith("v "))
+    map_stats["faces"] = sum(1 for line in obj_lines if line.startswith("f "))
+    map_stats["objects"] = sum(1 for line in obj_lines if line.startswith("o ") or line.startswith("g "))
+    mtl_names = [line[7:].strip() for line in obj_lines if line.startswith("mtllib ")]
+    map_stats["material_libraries"] = mtl_names
+    texture_keys = ("map_Kd ", "map_Ka ", "map_Ks ", "map_d ", "map_Bump ", "bump ", "norm ")
+    for mtl_name in mtl_names:
+        mtl_path = obj_file.parent / mtl_name
+        if not mtl_path.exists():
+            map_stats["textures_missing"].append(mtl_name)
+            continue
+        for line in mtl_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+            if line.startswith(texture_keys):
+                texture_name = line.split()[-1]
+                if not (mtl_path.parent / texture_name).exists():
+                    map_stats["textures_missing"].append(texture_name)
+
 manifest = {
     "map_scene": map_scene,
     "map_mesh": map_mesh,
@@ -56,11 +77,14 @@ manifest = {
     "animation_files": sorted("res://" + p.relative_to(game).as_posix() for p in (assets / "animations").rglob("*.glb")),
     "ruin_models": sum(1 for p in (assets / "ruins").rglob("*.glb")),
     "nature_models": sum(1 for p in (assets / "nature").rglob("*.gltf")),
-    "springfield_geometry_files": len(models)
+    "springfield_geometry_files": len(models),
+    "springfield_map_stats": map_stats
 }
 (assets / "asset_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 print(json.dumps(manifest, ensure_ascii=False, indent=2))
 if not map_scene and not map_mesh:
     raise SystemExit("Springfield geometry was not found. Refusing to build a fake map.")
+if map_mesh and map_stats["textures_missing"]:
+    raise SystemExit("Springfield OBJ has unresolved material or texture references: " + ", ".join(map_stats["textures_missing"]))
 if not (assets / "characters/Mannequin_Medium.glb").is_file():
     raise SystemExit("KayKit medium character model missing.")
