@@ -18,7 +18,7 @@ Projeto de aventura 3D em terceira pessoa, desenvolvido em Godot 4.7.2 (última 
 - Animações KayKit Rig Medium em GLB.
 - Kit de ruínas com modelos GLB.
 - Kit de natureza com modelos glTF e texturas.
-- Mapa Springfield com atlas de texturas e geometria OBJ armazenada em arquivo RAR interno: 77.296 vértices, 73.243 faces e 4.712 grupos/objetos.
+- Mapa Springfield convertido do OBJ original para GLB: 77.296 vértices, 73.243 faces e 9 materiais preservados; o original completo permanece no pacote de auditoria.
 
 Os pacotes originais completos ficam preservados no artefato de auditoria. O APK deve receber somente os recursos necessários à cena, para evitar carregar centenas de modelos sem uso e prejudicar o desempenho em celulares.
 
@@ -32,4 +32,4 @@ Os pacotes originais completos ficam preservados no artefato de auditoria. O APK
 
 ## Estado
 
-Protótipo inicial de exploração e importação dos assets. A compilação e os testes de importação Android ainda precisam terminar com sucesso antes de considerar o APK pronto para teste.
+Protótipo inicial de exploração 3D. Build Android 0.1.3 compilado com sucesso em Godot 4.7.2; importação e teste de inicialização headless passaram. Teste visual e de desempenho no aparelho Android ainda pendente.
