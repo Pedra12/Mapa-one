@@ -30,7 +30,7 @@ jobs:
       - name: Install archive tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y unar blender
+          sudo apt-get install -y unar blender python3-numpy
 
       - name: Download the nature asset pack from Release
         env:
