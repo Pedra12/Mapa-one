@@ -1,5 +1,7 @@
 extends Node3D
 
+var player_spawn := Vector3(0, 1.0, 0)
+
 func _ready() -> void:
     _setup_environment()
     _load_springfield_map()
@@ -35,6 +37,11 @@ func _load_springfield_map() -> void:
     if FileAccess.file_exists(manifest_path):
         var parsed = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
         if parsed is Dictionary:
+            var map_stats = parsed.get("springfield_map_stats", {})
+            if map_stats is Dictionary:
+                var spawn_data = map_stats.get("spawn_position", [0.0, 2.0, 0.0])
+                if spawn_data is Array and spawn_data.size() == 3:
+                    player_spawn = Vector3(float(spawn_data[0]), float(spawn_data[1]), float(spawn_data[2]))
             var scene_path := str(parsed.get("map_scene", ""))
             if scene_path != "" and ResourceLoader.exists(scene_path):
                 var packed := load(scene_path) as PackedScene
@@ -83,7 +90,7 @@ func _create_player() -> void:
     var player := CharacterBody3D.new()
     player.set_script(load("res://scripts/player.gd"))
     player.name = "Player"
-    player.position = Vector3(0, 1.0, 0)
+    player.position = player_spawn
     add_child(player)
 
 func _create_touch_hud() -> void:
