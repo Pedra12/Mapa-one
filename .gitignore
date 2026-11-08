@@ -1,0 +1,14 @@
+# Godot editor/import cache
+game/.godot/
+game/android/
+game/.import/
+game/export.cfg
+
+# Build output
+build/
+*.apk
+*.aab
+
+# Local extracted asset workspace
+asset-audit/
+release-assets/
