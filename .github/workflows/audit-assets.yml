@@ -35,6 +35,9 @@ jobs:
             --release-zip "release-assets/Stylized.Nature.MegaKit.Standard.zip" \
             --output asset-audit
 
+      - name: Extract and inspect ZIPs nested inside asset packs
+        run: python3 tools/inspect_nested_zips.py
+
       - name: Upload complete extracted asset library and inventory
         uses: actions/upload-artifact@v4
         with:
@@ -49,10 +52,12 @@ jobs:
           mkdir -p reports/asset-audit
           cp asset-audit/ASSET_INVENTORY.md reports/asset-audit/
           cp asset-audit/asset_inventory.json reports/asset-audit/
+          cp asset-audit/NESTED_ASSETS.md reports/asset-audit/
+          cp asset-audit/nested_inventory.json reports/asset-audit/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports/asset-audit/
           if ! git diff --cached --quiet; then
-            git commit -m "Publish complete 3D asset inventory"
+            git commit -m "Publish nested asset and map inventory"
             git push
           fi
