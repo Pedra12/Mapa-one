@@ -1,0 +1,93 @@
+[
+  {
+    "archive": "Human Basic Motions FREE/Animations/HumanBasicMotionsFREE_BlenderFiles.zip",
+    "path": "HumanF_BasicMotionsFREE_2.4.blend",
+    "size": 10649456,
+    "output": "asset-audit/nested/Human Basic Motions FREE/Animations/HumanBasicMotionsFREE_BlenderFiles/HumanF_BasicMotionsFREE_2.4.blend",
+    "status": "extracted"
+  },
+  {
+    "archive": "Human Basic Motions FREE/Animations/HumanBasicMotionsFREE_BlenderFiles.zip",
+    "path": "HumanM_BasicMotionsFREE_2.4.blend",
+    "size": 10100060,
+    "output": "asset-audit/nested/Human Basic Motions FREE/Animations/HumanBasicMotionsFREE_BlenderFiles/HumanM_BasicMotionsFREE_2.4.blend",
+    "status": "extracted"
+  },
+  {
+    "archive": "Human Basic Motions FREE/Animations/HumanBasicMotionsFREE_BlenderFiles.zip",
+    "status": "archive_complete",
+    "entries": 2,
+    "bad_crc_entry": null,
+    "output": "asset-audit/nested/Human Basic Motions FREE/Animations/HumanBasicMotionsFREE_BlenderFiles"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "source/FINAL OBJ.rar",
+    "size": 11009395,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ.rar",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas valla y roca transparencia.png",
+    "size": 17590,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas valla y roca transparencia.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas valla y roca.png",
+    "size": 1076171,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas valla y roca.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas, cristales, paredes, puerta central nuclear FIN.png",
+    "size": 718764,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas, cristales, paredes, puerta central nuclear FIN.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas, cristales, paredes y puerta FIN.png",
+    "size": 288934,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas, cristales, paredes y puerta FIN.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas colores pequeños, cristales, paredes y puerta.png",
+    "size": 23821,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas colores pequeños, cristales, paredes y puerta.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas emblematicos.png",
+    "size": 186629,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas emblematicos.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas final calle y cesped NM.png",
+    "size": 2753487,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas final calle y cesped NM.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "path": "textures/Atlas final calle y arboles.png",
+    "size": 1706717,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson/textures/Atlas final calle y arboles.png",
+    "status": "extracted"
+  },
+  {
+    "archive": "mapa-springfield/source/mapa-final-simpson.zip",
+    "status": "archive_complete",
+    "entries": 9,
+    "bad_crc_entry": null,
+    "output": "asset-audit/nested/mapa-springfield/source/mapa-final-simpson"
+  }
+]
