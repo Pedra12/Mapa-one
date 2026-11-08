@@ -1,26 +1,35 @@
-# Mapa-one
+# Mundo Perdido
 
-Repositório inicial do projeto **Mapa-one**.
+Projeto de aventura 3D em terceira pessoa, desenvolvido em Godot 4 para Android.
 
-## Objetivo
+## Estrutura atual
 
-Este repositório será utilizado para organizar e desenvolver os arquivos do projeto. A descrição técnica, os recursos, as instruções de execução e o histórico de alterações serão documentados aqui à medida que forem adicionados.
+- `game/`: projeto Godot 4, cena principal, scripts de movimento/câmera e HUD touch.
+- `tools/audit_assets.py`: inventário e extração segura dos ZIPs originais.
+- `tools/inspect_nested_zips.py`: inspeção de ZIPs encontrados dentro dos pacotes.
+- `tools/extract_rar_assets.py`: extração do arquivo RAR que contém a geometria do mapa Springfield.
+- `tools/prepare_game_assets.py`: seleciona e organiza os recursos originais para importação na Godot.
+- `reports/asset-audit/`: inventários publicados dos arquivos e formatos.
+- GitHub Actions gera o pacote integral de assets e executa a compilação Android.
 
-## Estrutura
+## Recursos já identificados
 
-A estrutura de pastas será definida conforme os arquivos e componentes reais do projeto forem enviados.
+- Personagem KayKit Mannequin Medium em GLB.
+- Animações KayKit Rig Medium em GLB.
+- Kit de ruínas com modelos GLB.
+- Kit de natureza com modelos glTF e texturas.
+- Mapa Springfield com atlas de texturas e geometria OBJ armazenada em arquivo RAR interno.
 
-## Desenvolvimento
+Os pacotes originais completos ficam preservados no artefato de auditoria. O APK deve receber somente os recursos necessários à cena, para evitar carregar centenas de modelos sem uso e prejudicar o desempenho em celulares.
 
-1. Adicione os arquivos do projeto a este repositório.
-2. Mantenha os recursos organizados em pastas com nomes claros.
-3. Registre alterações importantes nos commits.
-4. Atualize este README com as instruções reais de instalação, execução e compilação quando a estrutura estiver disponível.
+## Controles do protótipo
 
-## Status
+- Joystick esquerdo: movimentação.
+- Arrastar o lado direito: girar a câmera.
+- Botão Pular.
+- Botão Correr.
+- Botão Atirar reservado para a próxima etapa de combate.
 
-Repositório inicializado. O conteúdo e as etapas de desenvolvimento serão atualizados conforme o projeto evoluir.
+## Estado
 
-## Licença
-
-Nenhuma licença foi definida neste momento.
+Protótipo inicial de exploração e importação dos assets. A compilação e os testes de importação Android ainda precisam terminar com sucesso antes de considerar o APK pronto para teste.
