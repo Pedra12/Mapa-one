@@ -9,6 +9,7 @@ on:
       - 'tools/inspect_nested_zips.py'
       - 'tools/extract_rar_assets.py'
       - 'tools/prepare_game_assets.py'
+      - '.gitignore'
       - '.github/workflows/audit-assets.yml'
   workflow_dispatch:
 
