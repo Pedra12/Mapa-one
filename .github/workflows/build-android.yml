@@ -85,7 +85,13 @@ jobs:
           godot --headless --editor --path game --import --quit
 
       - name: Test game startup in headless mode
-        run: godot --headless --path game --quit-after 5
+        run: |
+          set -o pipefail
+          godot --headless --path game --quit-after 5 2>&1 | tee startup-test.log
+          if grep -Eq "SCRIPT ERROR|ERROR:" startup-test.log; then
+            echo "Godot reported runtime or script errors during startup."
+            exit 1
+          fi
 
       - name: Export Android APK
         run: |
