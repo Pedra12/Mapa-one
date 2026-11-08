@@ -64,9 +64,12 @@ if map_mesh:
             continue
         for line in mtl_path.read_text(encoding="utf-8", errors="ignore").splitlines():
             if line.startswith(texture_keys):
-                texture_name = line.split()[-1]
-                if not (mtl_path.parent / texture_name).exists():
-                    map_stats["textures_missing"].append(texture_name)
+                texture_name = line.split(" ", 1)[1].strip()
+                texture_path = mtl_path.parent / texture_name
+                if not texture_path.exists():
+                    matches = [p for p in mtl_path.parent.rglob("*") if p.is_file() and p.name.lower() == Path(texture_name).name.lower()]
+                    if not matches:
+                        map_stats["textures_missing"].append(texture_name)
 
 manifest = {
     "map_scene": map_scene,
