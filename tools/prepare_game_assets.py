@@ -47,13 +47,27 @@ if models:
     else:
         map_scene = "res://" + rel.as_posix()
 
-map_stats = {"vertices": 0, "faces": 0, "objects": 0, "material_libraries": [], "textures_missing": []}
+map_stats = {"vertices": 0, "faces": 0, "objects": 0, "material_libraries": [], "textures_missing": [], "bounds": {}, "spawn_position": [0.0, 2.0, 0.0]}
 if map_mesh:
     obj_file = game / map_mesh.replace("res://", "")
     obj_lines = obj_file.read_text(encoding="utf-8", errors="ignore").splitlines()
-    map_stats["vertices"] = sum(1 for line in obj_lines if line.startswith("v "))
+    vertex_rows = []
+    for line in obj_lines:
+        if line.startswith("v "):
+            parts = line.split()
+            if len(parts) >= 4:
+                try:
+                    vertex_rows.append((float(parts[1]), float(parts[2]), float(parts[3])))
+                except ValueError:
+                    pass
+    map_stats["vertices"] = len(vertex_rows)
     map_stats["faces"] = sum(1 for line in obj_lines if line.startswith("f "))
     map_stats["objects"] = sum(1 for line in obj_lines if line.startswith("o ") or line.startswith("g "))
+    if vertex_rows:
+        mins = [min(v[i] for v in vertex_rows) for i in range(3)]
+        maxs = [max(v[i] for v in vertex_rows) for i in range(3)]
+        map_stats["bounds"] = {"min": mins, "max": maxs}
+        map_stats["spawn_position"] = [(mins[0] + maxs[0]) * 0.5, mins[1] + 2.0, (mins[2] + maxs[2]) * 0.5]
     mtl_names = [line[7:].strip() for line in obj_lines if line.startswith("mtllib ")]
     map_stats["material_libraries"] = mtl_names
     texture_keys = ("map_Kd ", "map_Ka ", "map_Ks ", "map_d ", "map_Bump ", "bump ", "norm ")
