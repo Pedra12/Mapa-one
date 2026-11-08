@@ -9,6 +9,7 @@ on:
       - 'tools/inspect_nested_zips.py'
       - 'tools/extract_rar_assets.py'
       - 'tools/prepare_game_assets.py'
+      - 'tools/convert_springfield.py'
       - '.gitignore'
       - '.github/workflows/audit-assets.yml'
   workflow_dispatch:
@@ -29,7 +30,7 @@ jobs:
       - name: Install archive tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y unar
+          sudo apt-get install -y unar blender
 
       - name: Download the nature asset pack from Release
         env:
@@ -51,6 +52,13 @@ jobs:
 
       - name: Extract RAR model archive
         run: python3 tools/extract_rar_assets.py
+
+      - name: Convert Springfield OBJ into a merged GLB with preserved materials
+        env:
+          SPRINGFIELD_OBJ: "asset-audit/rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ/FINAL OBJ/Mapa Simpson.obj"
+          SPRINGFIELD_GLB: "asset-audit/converted/MapaSpringfield.glb"
+        run: |
+          blender --background --python tools/convert_springfield.py -- "$SPRINGFIELD_OBJ" "$SPRINGFIELD_GLB"
 
       - name: Prepare selected original assets for the Godot game
         run: python3 tools/prepare_game_assets.py
