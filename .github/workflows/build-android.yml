@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Checkout project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download latest successful complete asset audit
         env:
@@ -61,7 +61,7 @@ jobs:
           include-templates: true
 
       - name: Setup Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -84,6 +84,9 @@ jobs:
           godot --version
           godot --headless --editor --path game --import --quit
 
+      - name: Test game startup in headless mode
+        run: godot --headless --path game --quit-after 5
+
       - name: Export Android APK
         run: |
           mkdir -p build
@@ -91,7 +94,7 @@ jobs:
           test -s build/MundoPerdido-debug.apk
 
       - name: Upload test APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Mundo-Perdido-Android-APK
           path: build/MundoPerdido-debug.apk
