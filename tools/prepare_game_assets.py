@@ -19,13 +19,47 @@ kay = root / "extracted/KayKit_Character_Animations_1.1/KayKit_Character_Animati
 copy_tree(kay / "Mannequin Character/characters", assets / "characters")
 copy_tree(kay / "Mannequin Character/Textures", assets / "characters/Textures")
 copy_tree(kay / "Animations/gltf/Rig_Medium", assets / "animations/KayKit_Rig_Medium")
-copy_tree(kay / "Animations/gltf/Rig_Large", assets / "animations/KayKit_Rig_Large")
 
-# Preserve all ruin models and the Nature pack's glTF models and texture atlases.
-copy_tree(root / "extracted/RuinsGLB/RuinsGLB", assets / "ruins")
+# Stage a curated, mobile-sized subset. The full original libraries remain in
+# the complete audit artifact, while the APK receives only assets used by the scene.
 nature = root / "extracted/Stylized.Nature.MegaKit.Standard"
-copy_tree(nature / "glTF", assets / "nature/glTF")
+nature_src = nature / "glTF"
+nature_dst = assets / "nature/glTF"
+nature_dst.mkdir(parents=True, exist_ok=True)
+nature_models = [
+    "Bush_Common", "Bush_Common_Flowers",
+    "CommonTree_1", "CommonTree_2", "CommonTree_3", "CommonTree_4", "CommonTree_5",
+    "Pine_1", "Pine_2", "Pine_3", "Pine_4", "Pine_5",
+    "TwistedTree_1", "TwistedTree_2",
+    "Rock_Medium_1", "Rock_Medium_2", "Rock_Medium_3",
+    "Grass_Common_Short", "Grass_Common_Tall", "Grass_Wispy_Short", "Grass_Wispy_Tall",
+    "Fern_1", "Mushroom_Common", "Mushroom_Laetiporus",
+    "Flower_3_Group", "Flower_4_Group", "Plant_1", "Plant_7"
+]
+for model_name in nature_models:
+    for suffix in (".gltf", ".bin"):
+        src = nature_src / (model_name + suffix)
+        if src.is_file():
+            shutil.copy2(src, nature_dst / src.name)
 copy_tree(nature / "Textures", assets / "nature/Textures")
+
+ruins_src = root / "extracted/RuinsGLB/RuinsGLB"
+ruins_selection = {
+    "Accessories": ["Altar", "AncientCoinAmethyst", "AncientCoinEmerald", "AncientCoinRuby", "ChestBaseGold", "ChestCover", "WallLight"],
+    "Blocks": ["BlockMossMD", "BlockNormalMD", "BlockCrackMD"],
+    "Moss": ["GroundMossMD"],
+    "Pillars": ["PillarRound"],
+    "Stairs": ["StairsMD"],
+    "Walls": ["Gate", "WallBrokenMD", "WallNormalMD"],
+    "Skely": ["Skely", "SkelyDraugr", "SkelyPoison"]
+}
+for folder, names in ruins_selection.items():
+    for model_name in names:
+        src = ruins_src / folder / (model_name + ".glb")
+        if src.is_file():
+            dest = assets / "ruins" / folder
+            dest.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest / src.name)
 
 # The Springfield archive contains a RAR with the actual OBJ geometry.
 map_nested = root / "nested/mapa-springfield/source/mapa-final-simpson"
@@ -108,6 +142,8 @@ manifest = {
     "animation_files": sorted("res://" + p.relative_to(game).as_posix() for p in (assets / "animations").rglob("*.glb")),
     "ruin_models": sum(1 for p in (assets / "ruins").rglob("*.glb")),
     "nature_models": sum(1 for p in (assets / "nature").rglob("*.gltf")),
+    "nature_model_names": nature_models,
+    "ruin_model_names": [f"{folder}/{name}.glb" for folder, names in ruins_selection.items() for name in names],
     "springfield_geometry_files": len(models),
     "springfield_map_stats": map_stats
 }
