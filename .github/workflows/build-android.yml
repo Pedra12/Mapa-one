@@ -6,8 +6,10 @@ on:
     paths:
       - 'game/**'
       - 'tools/prepare_game_assets.py'
-      - '.github/workflows/build-android.yml'
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Audit and extract all game assets"]
+    types: [completed]
 
 permissions:
   contents: read
