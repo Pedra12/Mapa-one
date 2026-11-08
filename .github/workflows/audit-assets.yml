@@ -8,6 +8,7 @@ on:
       - 'tools/audit_assets.py'
       - 'tools/inspect_nested_zips.py'
       - 'tools/extract_rar_assets.py'
+      - 'tools/prepare_game_assets.py'
       - '.github/workflows/audit-assets.yml'
   workflow_dispatch:
 
@@ -49,6 +50,18 @@ jobs:
 
       - name: Extract RAR model archive
         run: python3 tools/extract_rar_assets.py
+
+      - name: Prepare selected original assets for the Godot game
+        run: python3 tools/prepare_game_assets.py
+
+      - name: Upload selected Godot game assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mundo-Perdido-Godot-assets
+          path: game/assets/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30
 
       - name: Upload complete extracted asset library and inventory
         uses: actions/upload-artifact@v4
