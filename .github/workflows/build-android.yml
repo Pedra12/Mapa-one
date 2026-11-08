@@ -1,0 +1,82 @@
+name: Build Mundo Perdido Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'game/**'
+      - 'tools/prepare_game_assets.py'
+      - '.github/workflows/build-android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Install archive tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unar
+
+      - name: Download latest successful complete asset audit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          AUDIT_RUN_ID=$(gh run list --repo "$GITHUB_REPOSITORY" \
+            --workflow "Audit and extract all game assets" \
+            --status completed --limit 20 \
+            --json databaseId,conclusion \
+            --jq '[.[] | select(.conclusion == "success")][0].databaseId')
+          test -n "$AUDIT_RUN_ID" && test "$AUDIT_RUN_ID" != "null"
+          echo "Using asset audit run: $AUDIT_RUN_ID"
+          gh run download "$AUDIT_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --name "Mapa-one-ALL-assets-extracted-and-inventory" \
+            --dir asset-audit
+
+      - name: Prepare original models and textures for Godot
+        run: python3 tools/prepare_game_assets.py
+
+      - name: Setup Godot and matching export templates
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.4.1
+          use-dotnet: false
+          include-templates: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Configure Android debug signing
+        run: |
+          mkdir -p "$HOME/.android"
+          keytool -genkeypair -v -keystore "$HOME/.android/debug.keystore" \
+            -storepass android -alias androiddebugkey -keypass android \
+            -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA \
+            -keysize 2048 -validity 10000
+
+      - name: Import and validate Godot project
+        run: |
+          godot --version
+          godot --headless --editor --path game --import --quit
+
+      - name: Export Android APK
+        run: |
+          mkdir -p build
+          godot --headless --path game --export-debug Android build/MundoPerdido-debug.apk
+          test -s build/MundoPerdido-debug.apk
+
+      - name: Upload test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mundo-Perdido-Android-APK
+          path: build/MundoPerdido-debug.apk
+          if-no-files-found: error
+          retention-days: 30
