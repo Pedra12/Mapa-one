@@ -29,7 +29,7 @@ copy_tree(nature / "Textures", assets / "nature/Textures")
 
 # The Springfield archive contains a RAR with the actual OBJ geometry.
 map_nested = root / "nested/mapa-springfield/source/mapa-final-simpson"
-map_rar = root / "rar-extracted/mapa-springfield/source/mapa-final-simpson/FINAL OBJ"
+map_rar = root / "rar-extracted/mapa-springfield/source/mapa-final-simpson/source/FINAL OBJ"
 copy_tree(map_nested / "textures", assets / "springfield/textures")
 copy_tree(map_rar, assets / "springfield/geometry")
 
