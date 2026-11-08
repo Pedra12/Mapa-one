@@ -1,6 +1,6 @@
 # Mundo Perdido
 
-Projeto de aventura 3D em terceira pessoa, desenvolvido em Godot 4 para Android.
+Projeto de aventura 3D em terceira pessoa, desenvolvido em Godot 4.7.2 (última versão estável identificada) para Android.
 
 ## Estrutura atual
 
@@ -18,7 +18,7 @@ Projeto de aventura 3D em terceira pessoa, desenvolvido em Godot 4 para Android.
 - Animações KayKit Rig Medium em GLB.
 - Kit de ruínas com modelos GLB.
 - Kit de natureza com modelos glTF e texturas.
-- Mapa Springfield com atlas de texturas e geometria OBJ armazenada em arquivo RAR interno.
+- Mapa Springfield com atlas de texturas e geometria OBJ armazenada em arquivo RAR interno: 77.296 vértices, 73.243 faces e 4.712 grupos/objetos.
 
 Os pacotes originais completos ficam preservados no artefato de auditoria. O APK deve receber somente os recursos necessários à cena, para evitar carregar centenas de modelos sem uso e prejudicar o desempenho em celulares.
 
