@@ -10,13 +10,11 @@ window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
 
+[physics]
+3d/default_gravity=9.8
+
 [rendering]
 renderer/rendering_method="mobile"
 renderer/rendering_method.mobile="mobile"
 textures/default_filters/use_nearest_mipmap_filter=false
 environment/defaults/default_clear_color=Color(0.31, 0.48, 0.62, 1)
-
-[physics]
-3d/default_gravity=9.8
-
-[application]
