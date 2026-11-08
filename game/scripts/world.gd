@@ -87,7 +87,11 @@ func _create_player() -> void:
     add_child(player)
 
 func _create_touch_hud() -> void:
-    var hud := CanvasLayer.new()
+    var layer := CanvasLayer.new()
+    layer.name = "TouchLayer"
+    add_child(layer)
+    var hud := Control.new()
     hud.name = "TouchHUD"
+    hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     hud.set_script(load("res://scripts/touch_hud.gd"))
-    add_child(hud)
+    layer.add_child(hud)
