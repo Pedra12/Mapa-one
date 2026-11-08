@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Select verified assets from the extracted packs and stage them for Godot."""
 from pathlib import Path
-import json, shutil
+import json, shutil, difflib, unicodedata
 
 root = Path("asset-audit")
 game = Path("game")
@@ -71,6 +71,9 @@ if map_mesh:
     mtl_names = [line[7:].strip() for line in obj_lines if line.startswith("mtllib ")]
     map_stats["material_libraries"] = mtl_names
     texture_keys = ("map_Kd ", "map_Ka ", "map_Ks ", "map_d ", "map_Bump ", "bump ", "norm ")
+    image_files = [p for p in (assets / "springfield").rglob("*") if p.is_file() and p.suffix.lower() in (".png", ".jpg", ".jpeg", ".tga", ".bmp", ".webp")]
+    def normalize_name(value):
+        return unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii").lower()
     for mtl_name in mtl_names:
         mtl_path = obj_file.parent / mtl_name
         if not mtl_path.exists():
@@ -78,11 +81,23 @@ if map_mesh:
             continue
         for line in mtl_path.read_text(encoding="utf-8", errors="ignore").splitlines():
             if line.startswith(texture_keys):
-                texture_name = line.split(" ", 1)[1].strip()
-                image_files = [p for p in mtl_path.parent.rglob("*") if p.is_file() and p.suffix.lower() in (".png", ".jpg", ".jpeg", ".tga", ".bmp", ".webp")]
-                matches = [p for p in image_files if p.name.lower() in line.lower()]
-                if not matches:
-                    map_stats["textures_missing"].append(texture_name)
+                rest = line.split(" ", 1)[1].strip()
+                reference = rest
+                for option in (" -bm ", " -s ", " -o ", " -clamp "):
+                    if option in reference:
+                        reference = reference.split(option, 1)[0].strip()
+                reference = reference.strip('"')
+                if any(p.name.lower() in line.lower() for p in image_files):
+                    continue
+                target_name = Path(reference).name
+                normalized_target = normalize_name(target_name)
+                ranked = sorted(image_files, key=lambda p: difflib.SequenceMatcher(None, normalized_target, normalize_name(p.name)).ratio(), reverse=True)
+                if ranked and difflib.SequenceMatcher(None, normalized_target, normalize_name(ranked[0].name)).ratio() >= 0.72:
+                    alias = mtl_path.parent / target_name
+                    if not alias.exists():
+                        shutil.copy2(ranked[0], alias)
+                else:
+                    map_stats["textures_missing"].append(reference)
 
 manifest = {
     "map_scene": map_scene,
