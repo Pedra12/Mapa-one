@@ -3,10 +3,12 @@ name: Audit and extract all game assets
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'reports/asset-audit/**'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   audit:
@@ -41,3 +43,16 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
+
+      - name: Publish readable inventory to repository
+        run: |
+          mkdir -p reports/asset-audit
+          cp asset-audit/ASSET_INVENTORY.md reports/asset-audit/
+          cp asset-audit/asset_inventory.json reports/asset-audit/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/asset-audit/
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish complete 3D asset inventory"
+            git push
+          fi
