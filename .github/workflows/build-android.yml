@@ -87,7 +87,7 @@ jobs:
       - name: Export Android APK
         run: |
           mkdir -p build
-          godot --headless --path game --export-debug Android build/MundoPerdido-debug.apk
+          godot --headless --path game --export-debug Android ../build/MundoPerdido-debug.apk
           test -s build/MundoPerdido-debug.apk
 
       - name: Upload test APK
