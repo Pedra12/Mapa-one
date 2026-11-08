@@ -35,14 +35,28 @@ func _load_springfield_map() -> void:
     if FileAccess.file_exists(manifest_path):
         var parsed = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
         if parsed is Dictionary:
-            var map_path := str(parsed.get("map_scene", ""))
-            if map_path != "" and ResourceLoader.exists(map_path):
-                var packed := load(map_path) as PackedScene
+            var scene_path := str(parsed.get("map_scene", ""))
+            if scene_path != "" and ResourceLoader.exists(scene_path):
+                var packed := load(scene_path) as PackedScene
                 if packed:
                     var map_node := packed.instantiate()
                     map_node.name = "SpringfieldMap"
                     add_child(map_node)
                     return
+            var mesh_path := str(parsed.get("map_mesh", ""))
+            if mesh_path != "" and ResourceLoader.exists(mesh_path):
+                var map_mesh = load(mesh_path)
+                if map_mesh is Mesh:
+                    var map_root := Node3D.new()
+                    map_root.name = "SpringfieldMap"
+                    var instance := MeshInstance3D.new()
+                    instance.mesh = map_mesh
+                    instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+                    map_root.add_child(instance)
+                    add_child(map_root)
+                    instance.create_trimesh_collision()
+                    return
+    push_warning("Springfield geometry not available. Using a temporary ground for input testing.")
     _create_stylized_test_ground()
 
 func _create_stylized_test_ground() -> void:
@@ -66,9 +80,8 @@ func _create_stylized_test_ground() -> void:
     add_child(body)
 
 func _create_player() -> void:
-    var player_script = load("res://scripts/player.gd")
     var player := CharacterBody3D.new()
-    player.set_script(player_script)
+    player.set_script(load("res://scripts/player.gd"))
     player.name = "Player"
     player.position = Vector3(0, 1.0, 0)
     add_child(player)
