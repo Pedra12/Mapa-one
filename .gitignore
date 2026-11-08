@@ -10,5 +10,5 @@ build/
 *.aab
 
 # Local extracted asset workspace
-asset-audit/
-release-assets/
+/asset-audit/
+/release-assets/
