@@ -71,25 +71,44 @@ func _load_springfield_map() -> void:
 
     var stats = manifest.get("springfield_map_stats", {})
     if stats is Dictionary:
-        player_spawn = _find_walkable_spawn(stats)
+        player_spawn = _find_walkable_spawn(stats, map_node)
     map_loaded = true
     print("SPRINGFIELD MAP LOADED: ", scene_path, " | spawn=", player_spawn)
 
-func _find_walkable_spawn(stats: Dictionary) -> Vector3:
-    var bounds = stats.get("bounds", {})
-    if not (bounds is Dictionary):
-        return player_spawn
-    var mins = bounds.get("min", [])
-    var maxs = bounds.get("max", [])
-    if not (mins is Array and maxs is Array and mins.size() >= 3 and maxs.size() >= 3):
-        return player_spawn
+func _find_walkable_spawn(stats: Dictionary, map_root: Node) -> Vector3:
+    var combined_bounds := AABB()
+    var has_bounds := false
+    var meshes := map_root.find_children("*", "MeshInstance3D", true, false)
+    if map_root is MeshInstance3D:
+        meshes.push_front(map_root)
+    for mesh_node in meshes:
+        if mesh_node is MeshInstance3D and mesh_node.mesh:
+            var world_bounds: AABB = mesh_node.global_transform * mesh_node.get_aabb()
+            if has_bounds:
+                combined_bounds = combined_bounds.merge(world_bounds)
+            else:
+                combined_bounds = world_bounds
+                has_bounds = true
 
-    var min_x := float(mins[0])
-    var min_y := float(mins[1])
-    var min_z := float(mins[2])
-    var max_x := float(maxs[0])
-    var max_y := float(maxs[1])
-    var max_z := float(maxs[2])
+    if not has_bounds:
+        var saved_bounds = stats.get("bounds", {})
+        if not (saved_bounds is Dictionary):
+            return player_spawn
+        var mins = saved_bounds.get("min", [])
+        var maxs = saved_bounds.get("max", [])
+        if not (mins is Array and maxs is Array and mins.size() >= 3 and maxs.size() >= 3):
+            return player_spawn
+        combined_bounds = AABB(
+            Vector3(float(mins[0]), float(mins[1]), float(mins[2])),
+            Vector3(float(maxs[0]) - float(mins[0]), float(maxs[1]) - float(mins[1]), float(maxs[2]) - float(mins[2]))
+        )
+
+    var min_x := combined_bounds.position.x
+    var min_y := combined_bounds.position.y
+    var min_z := combined_bounds.position.z
+    var max_x := combined_bounds.end.x
+    var max_y := combined_bounds.end.y
+    var max_z := combined_bounds.end.z
     var state := get_world_3d().direct_space_state
 
     for row in range(5):
