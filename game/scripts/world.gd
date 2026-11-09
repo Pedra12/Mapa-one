@@ -115,8 +115,8 @@ func _find_walkable_spawn(stats: Dictionary, map_root: Node) -> Vector3:
         for col in range(5):
             var tx := 0.2 + float(col) * 0.15
             var tz := 0.2 + float(row) * 0.15
-            var x := lerp(min_x, max_x, tx)
-            var z := lerp(min_z, max_z, tz)
+            var x: float = lerp(min_x, max_x, tx)
+            var z: float = lerp(min_z, max_z, tz)
             var origin := Vector3(x, max_y + 100.0, z)
             var finish := Vector3(x, min_y - 100.0, z)
             var query := PhysicsRayQueryParameters3D.create(origin, finish)
