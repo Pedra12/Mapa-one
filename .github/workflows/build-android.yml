@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'game/**'
+      - '.github/workflows/build-android.yml'
   workflow_dispatch:
   workflow_run:
     workflows: ["Audit and extract all game assets"]
@@ -83,13 +84,19 @@ jobs:
         run: |
           godot --version
           godot --headless --editor --path game --import --quit
+          test -s game/assets/asset_manifest.json
+          test -s game/assets/springfield/geometry/MapaSpringfield.glb
 
-      - name: Test game startup in headless mode
+      - name: Test game startup and require the real map
         run: |
           set -o pipefail
-          godot --headless --path game --quit-after 5 2>&1 | tee startup-test.log
+          godot --headless --path game --quit-after 8 2>&1 | tee startup-test.log
           if grep -Eq "SCRIPT ERROR|ERROR:" startup-test.log; then
             echo "Godot reported runtime or script errors during startup."
+            exit 1
+          fi
+          if ! grep -q "SPRINGFIELD MAP LOADED:" startup-test.log; then
+            echo "The Springfield map did not load. Refusing to package a broken APK."
             exit 1
           fi
 
