@@ -1,10 +1,12 @@
 extends Node3D
 
-var player_spawn := Vector3(0, 1.0, 0)
+const DEFAULT_MAP_PATH := "res://assets/springfield/geometry/MapaSpringfield.glb"
+var player_spawn := Vector3(0.0, 3.0, 0.0)
+var map_loaded := false
 
 func _ready() -> void:
     _setup_environment()
-    _load_springfield_map()
+    await _load_springfield_map()
     _create_player()
     _create_touch_hud()
 
@@ -34,38 +36,78 @@ func _setup_environment() -> void:
 
 func _load_springfield_map() -> void:
     var manifest_path := "res://assets/asset_manifest.json"
+    var scene_path := DEFAULT_MAP_PATH
+    var manifest: Dictionary = {}
+
     if FileAccess.file_exists(manifest_path):
         var parsed = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
         if parsed is Dictionary:
-            var map_stats = parsed.get("springfield_map_stats", {})
-            if map_stats is Dictionary:
-                var spawn_data = map_stats.get("spawn_position", [0.0, 2.0, 0.0])
+            manifest = parsed
+            var configured_path := str(manifest.get("map_scene", ""))
+            if not configured_path.is_empty():
+                scene_path = configured_path
+            var stats = manifest.get("springfield_map_stats", {})
+            if stats is Dictionary:
+                var spawn_data = stats.get("spawn_position", [])
                 if spawn_data is Array and spawn_data.size() == 3:
                     player_spawn = Vector3(float(spawn_data[0]), float(spawn_data[1]), float(spawn_data[2]))
-            var scene_path := str(parsed.get("map_scene", ""))
-            if scene_path != "" and ResourceLoader.exists(scene_path):
-                var packed := load(scene_path) as PackedScene
-                if packed:
-                    var map_node := packed.instantiate()
-                    map_node.name = "SpringfieldMap"
-                    add_child(map_node)
-                    _add_map_collisions(map_node)
-                    return
-            var mesh_path := str(parsed.get("map_mesh", ""))
-            if mesh_path != "" and ResourceLoader.exists(mesh_path):
-                var map_mesh = load(mesh_path)
-                if map_mesh is Mesh:
-                    var map_root := Node3D.new()
-                    map_root.name = "SpringfieldMap"
-                    var instance := MeshInstance3D.new()
-                    instance.mesh = map_mesh
-                    instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-                    map_root.add_child(instance)
-                    add_child(map_root)
-                    instance.create_trimesh_collision()
-                    return
-    push_warning("Springfield geometry not available. Using a temporary ground for input testing.")
-    _create_stylized_test_ground()
+
+    if not ResourceLoader.exists(scene_path):
+        push_error("MAPA AUSENTE: arquivo não encontrado em " + scene_path)
+        _create_stylized_test_ground()
+        return
+
+    var map_resource = load(scene_path)
+    if not (map_resource is PackedScene):
+        push_error("MAPA INVÁLIDO: não foi possível importar " + scene_path)
+        _create_stylized_test_ground()
+        return
+
+    var map_node := (map_resource as PackedScene).instantiate()
+    map_node.name = "SpringfieldMap"
+    add_child(map_node)
+    _add_map_collisions(map_node)
+    await get_tree().physics_frame
+
+    var stats = manifest.get("springfield_map_stats", {})
+    if stats is Dictionary:
+        player_spawn = _find_walkable_spawn(stats)
+    map_loaded = true
+    print("SPRINGFIELD MAP LOADED: ", scene_path, " | spawn=", player_spawn)
+
+func _find_walkable_spawn(stats: Dictionary) -> Vector3:
+    var bounds = stats.get("bounds", {})
+    if not (bounds is Dictionary):
+        return player_spawn
+    var mins = bounds.get("min", [])
+    var maxs = bounds.get("max", [])
+    if not (mins is Array and maxs is Array and mins.size() >= 3 and maxs.size() >= 3):
+        return player_spawn
+
+    var min_x := float(mins[0])
+    var min_y := float(mins[1])
+    var min_z := float(mins[2])
+    var max_x := float(maxs[0])
+    var max_y := float(maxs[1])
+    var max_z := float(maxs[2])
+    var state := get_world_3d().direct_space_state
+
+    for row in range(5):
+        for col in range(5):
+            var tx := 0.2 + float(col) * 0.15
+            var tz := 0.2 + float(row) * 0.15
+            var x := lerp(min_x, max_x, tx)
+            var z := lerp(min_z, max_z, tz)
+            var origin := Vector3(x, max_y + 100.0, z)
+            var finish := Vector3(x, min_y - 100.0, z)
+            var query := PhysicsRayQueryParameters3D.create(origin, finish)
+            var hit := state.intersect_ray(query)
+            if not hit.is_empty():
+                var normal: Vector3 = hit.get("normal", Vector3.UP)
+                if normal.y > 0.45:
+                    return hit.position + Vector3.UP * 1.15
+
+    return Vector3((min_x + max_x) * 0.5, min_y + 8.0, (min_z + max_z) * 0.5)
 
 func _add_map_collisions(map_root: Node) -> void:
     var meshes := map_root.find_children("*", "MeshInstance3D", true, false)
@@ -109,5 +151,6 @@ func _create_touch_hud() -> void:
     var hud := Control.new()
     hud.name = "TouchHUD"
     hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
     hud.set_script(load("res://scripts/touch_hud.gd"))
     layer.add_child(hud)
